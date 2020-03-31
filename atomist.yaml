@@ -39,8 +39,8 @@ skill:
 parameters:
   - string_array:
       name: users
-      display_name: Users
-      description: User names to send pull request reminders to
+      display_name: GitHub Logins
+      description: GitHub logins to send notifications
       required: false      
   - schedule:
       name: reminder
