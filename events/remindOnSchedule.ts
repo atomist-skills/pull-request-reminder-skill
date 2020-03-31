@@ -82,7 +82,7 @@ export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfigura
                 ctx);
             msg.attachments[0].footer =
                 `${msg.attachments[0].footer} \u00B7 ${url(
-                    `https://preview.atomist.com/manage/${ctx.workspaceId}/skills/configure/${ctx.skill.id}/${encodeURIComponent(ctx.configuration[0].name)}`,"Configure")}`,
+                    `https://preview.atomist.com/manage/${ctx.workspaceId}/skills/configure/${ctx.skill.id}/${encodeURIComponent(ctx.configuration[0].name)}`, "Configure")}`,
                 userPullRequests.forEach(pr => {
                     msg.attachments.push({
                         color: "#37A745",
