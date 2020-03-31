@@ -1,8 +1,8 @@
-# `atomist/claxon-skill`
+# `atomist/pull-request-remdinder-skill`
        
 <!---atomist-skill-readme:start---> 
 
-Atomist internal Skill to announce customer skill changes to our channels    
+Atomist Skill to periodically send reminders about pending pull request reviews to reviewers.     
     
 <!---atomist-skill-readme:end--->
 ---
