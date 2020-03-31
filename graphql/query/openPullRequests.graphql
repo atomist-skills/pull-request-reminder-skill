@@ -1,0 +1,26 @@
+query OpenPullRequest($first: Int, $offset: Int) {
+    PullRequest(state: "open", first: $first, offset: $offset) {
+        url
+        number
+        title
+        author {
+            login
+        }
+        repo {
+            name
+            owner
+            url
+        }
+        reviews(state: requested) @required {
+            state
+            by @required {
+                person @required {
+                    chatId @required {
+                        screenName
+                    }
+                }
+                login
+            }
+        }
+    }
+}
