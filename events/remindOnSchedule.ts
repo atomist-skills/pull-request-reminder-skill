@@ -26,6 +26,7 @@ import { slackInfoMessage } from "@atomist/skill/lib/messages";
 import {
     escape,
     githubToSlack,
+    url,
 } from "@atomist/slack-messages";
 import {
     OpenPullRequestQuery,
@@ -79,22 +80,25 @@ export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfigura
                 "Pending Pull Request Reviews",
                 `Following pull ${userPullRequests.length === 1 ? "request is" : "requests are"} pending your review:`,
                 ctx);
-            userPullRequests.forEach(pr => {
-                msg.attachments.push({
-                    color: "#37A745",
-                    /* eslint-disable @typescript-eslint/camelcase */
-                    author_icon: "https://images.atomist.com/rug/pull-request-open.png",
-                    author_name: `#${pr.number} ${pr.title}`,
-                    author_link: pr.url,
-                    fallback: `#${pr.number} ${escape(pr.title)}`,
-                    text: removeMarkers(linkIssues(githubToSlack(pr.body), pr.repo)),
-                    mrkdwn_in: ["text"],
-                    footer: repoAndlabelsAndAssigneesFooter(pr.repo, pr.labels, pr.assignees),
-                    footer_icon: commitIcon(pr.repo),
-                    ts: normalizeTimestamp(pr.createdAt),
-                    /* eslint-enable @typescript-eslint/camelcase */
+            msg.attachments[0].footer =
+                `${msg.attachments[0].footer} \u00B7 ${url(
+                    `https://preview.atomist.com/manage/${ctx.workspaceId}/skills/configure/${ctx.skill.id}/${encodeURIComponent(ctx.configuration[0].name)}`,"Configure")}`,
+                userPullRequests.forEach(pr => {
+                    msg.attachments.push({
+                        color: "#37A745",
+                        /* eslint-disable @typescript-eslint/camelcase */
+                        author_icon: "https://images.atomist.com/rug/pull-request-open.png",
+                        author_name: `#${pr.number} ${pr.title}`,
+                        author_link: pr.url,
+                        fallback: `#${pr.number} ${escape(pr.title)}`,
+                        text: removeMarkers(linkIssues(githubToSlack(pr.body), pr.repo)),
+                        mrkdwn_in: ["text"],
+                        footer: repoAndlabelsAndAssigneesFooter(pr.repo, pr.labels, pr.assignees),
+                        footer_icon: commitIcon(pr.repo),
+                        ts: normalizeTimestamp(pr.createdAt),
+                        /* eslint-enable @typescript-eslint/camelcase */
+                    });
                 });
-            });
             await ctx.audit.log(`Sending pull request notification to chat user @${chatId}`);
             await ctx.message.send(msg, { users: [chatId], channels: [] });
         }
