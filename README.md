@@ -1,4 +1,4 @@
-# `atomist/pull-request-remdinder-skill`
+# `atomist/pull-request-reminder-skill`
        
 <!---atomist-skill-readme:start---> 
 
