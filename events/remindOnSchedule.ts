@@ -28,6 +28,7 @@ import {
     githubToSlack,
     url,
 } from "@atomist/slack-messages";
+import * as _ from "lodash";
 import {
     OpenPullRequestQuery,
     OpenPullRequestQueryVariables,
@@ -69,7 +70,7 @@ export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfigura
         const userPullRequests = [];
         let chatId;
         pullRequests.forEach(pr => {
-            if (pr.reviews.some(r => r.by.some(b => b.login === user))) {
+            if (pr.reviews.some(r => r.state === "requested" && r.by.some(b => b.login === user))) {
                 userPullRequests.push(pr);
                 const review = pr.reviews.find(r => r.by.some(b => b.login === user));
                 chatId = review.by.find(b => b.login === user).person.chatId.screenName;
@@ -83,7 +84,7 @@ export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfigura
             msg.attachments[0].footer =
                 `${msg.attachments[0].footer} \u00B7 ${url(
                     `https://preview.atomist.com/manage/${ctx.workspaceId}/skills/configure/${ctx.skill.id}/${encodeURIComponent(ctx.configuration[0].name)}`,"Configure")}`,
-                userPullRequests.forEach(pr => {
+                _.orderBy(userPullRequests, ["createdAt"], ["desc"]).forEach(pr => {
                     msg.attachments.push({
                         color: "#37A745",
                         /* eslint-disable @typescript-eslint/camelcase */
