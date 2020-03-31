@@ -72,9 +72,9 @@ export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfigura
             userPullRequests.forEach(pr => {
                 msg.attachments.push({
                     color: "#37A745",
-                    author_icon: "https://images.atomist.com/rug/pull-request-open.png",
-                    author_name: `#${pr.number} ${pr.title}`,
-                    author_link: pr.url,
+                    author_icon: "https://images.atomist.com/rug/pull-request-open.png", // eslint-disable @typescript-eslint/camelcase
+                    author_name: `#${pr.number} ${pr.title}`, // eslint-disable @typescript-eslint/camelcase
+                    author_link: pr.url, // eslint-disable @typescript-eslint/camelcase
                     fallback: `#${pr.number} ${pr.title}`,
                     footer: url(pr.repo.url, `${pr.repo.owner}/${pr.repo.name}`),
                 });
