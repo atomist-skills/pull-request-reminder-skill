@@ -45,7 +45,7 @@ export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfigura
     let prs;
     do {
         prs = await ctx.graphql.query<OpenPullRequestQuery, OpenPullRequestQueryVariables>(
-            "openPullRequest.graphql",
+            "openPullRequests.graphql",
             {
                 first: size,
                 offset,
