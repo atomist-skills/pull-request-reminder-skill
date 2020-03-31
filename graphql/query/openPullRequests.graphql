@@ -3,6 +3,7 @@ query OpenPullRequest($first: Int, $offset: Int) {
         url
         number
         title
+        body
         author {
             login
         }
@@ -10,7 +11,20 @@ query OpenPullRequest($first: Int, $offset: Int) {
             name
             owner
             url
+            org {
+                provider {
+                    apiUrl
+                    providerType
+                }
+            }
         }
+        labels {
+            name
+        }
+        assignees {
+            name
+        }
+        createdAt
         reviews(state: requested) @required {
             state
             by @required {

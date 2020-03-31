@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
+import { normalizeTimestamp } from "@atomist/sdm-pack-lifecycle/lib/lifecycle/util";
+import {
+    commitIcon,
+    linkIssues,
+    removeMarkers,
+    repoAndlabelsAndAssigneesFooter,
+} from "@atomist/sdm-pack-lifecycle/lib/util/helpers";
 import { EventHandler } from "@atomist/skill/lib/handler";
 import { slackInfoMessage } from "@atomist/skill/lib/messages";
-import { url } from "@atomist/slack-messages";
+import {
+    escape,
+    githubToSlack,
+} from "@atomist/slack-messages";
 import {
     OpenPullRequestQuery,
     OpenPullRequestQueryVariables,
@@ -76,9 +86,13 @@ export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfigura
                     author_icon: "https://images.atomist.com/rug/pull-request-open.png",
                     author_name: `#${pr.number} ${pr.title}`,
                     author_link: pr.url,
+                    fallback: `#${pr.number} ${escape(pr.title)}`,
+                    text: removeMarkers(linkIssues(githubToSlack(pr.body), pr.repo)),
+                    mrkdwn_in: ["text"],
+                    footer: repoAndlabelsAndAssigneesFooter(pr.repo, pr.labels, pr.assignees),
+                    footer_icon: commitIcon(pr.repo),
+                    ts: normalizeTimestamp(pr.createdAt),
                     /* eslint-enable @typescript-eslint/camelcase */
-                    fallback: `#${pr.number} ${pr.title}`,
-                    footer: url(pr.repo.url, `${pr.repo.owner}/${pr.repo.name}`),
                 });
             });
             await ctx.audit.log(`Sending pull request notification to chat user @${chatId}`);

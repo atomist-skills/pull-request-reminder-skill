@@ -1,6 +1,8 @@
 {
   "main": "node_modules/@atomist/skill/lib/function.js",
   "dependencies": {
+    "@atomist/sdm": "^2.0.0-master.20200330164246",
+    "@atomist/sdm-pack-lifecycle": "^0.3.0-master.20200311174235",
     "@atomist/skill": "0.1.0-master.20200325205350",
     "@atomist/slack-messages": "^1.1.1",
     "lodash": "^4.17.15"
