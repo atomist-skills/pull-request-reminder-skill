@@ -42,11 +42,12 @@ interface RemindConfiguration {
 
 export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfiguration> = async ctx => {
     const users = ctx.configuration[0].parameters.users;
+
     if (!users || users.length === 0) {
         return {
             code: 0,
             visibility: "hidden",
-            reason: `No users configured to remind`,
+            reason: `No users configured to be reminded`,
         };
     }
 
@@ -66,6 +67,20 @@ export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfigura
         pullRequests.push(...(prs?.PullRequest || []));
     } while (!!prs && !!prs.PullRequest && prs.PullRequest.length > 0);
 
+    if (pullRequests.length === 0) {
+        await ctx.audit.log(`No pending pull requests reviews for users ${users.join(", ")}`);
+        return {
+            code: 0,
+            reason: `No pending pull requests reviews for configured users`,
+            visibility: "hidden",
+        };
+    } else {
+        await ctx.audit.log(`${pullRequests.length} pending pull request ${pullRequests.length === 1 ? "review" : "reviews"} for users ${users.join(", ")}`);
+        for (const pr of pullRequests) {
+            await ctx.audit.log(` - ${pr.repo.owner}/${pr.repo.name}#${pr.number} ${pr.title}`);
+        }
+    }
+
     for (const user of users) {
         const userPullRequests = [];
         let chatId;
@@ -83,7 +98,7 @@ export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfigura
                 ctx);
             msg.attachments[0].footer =
                 `${msg.attachments[0].footer} \u00B7 ${url(
-                    `https://preview.atomist.com/manage/${ctx.workspaceId}/skills/configure/${ctx.skill.id}/${encodeURIComponent(ctx.configuration[0].name)}`,"Configure")}`,
+                    `https://preview.atomist.com/manage/${ctx.workspaceId}/skills/configure/${ctx.skill.id}/${encodeURIComponent(ctx.configuration[0].name)}`, "Configure")}`,
                 _.orderBy(userPullRequests, ["createdAt"], ["desc"]).forEach(pr => {
                     msg.attachments.push({
                         color: "#37A745",
