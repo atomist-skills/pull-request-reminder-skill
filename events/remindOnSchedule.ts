@@ -94,7 +94,7 @@ export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfigura
         if (userPullRequests.length > 0 && !!chatId) {
             const msg = slackInfoMessage(
                 "Pending Pull Request Reviews",
-                `Following pull ${userPullRequests.length === 1 ? "request is" : "requests are"} pending your review:`,
+                `The following pull ${userPullRequests.length === 1 ? "request is" : "requests are"} pending your review:`,
                 ctx);
             msg.attachments[0].footer =
                 `${msg.attachments[0].footer} \u00B7 ${url(
