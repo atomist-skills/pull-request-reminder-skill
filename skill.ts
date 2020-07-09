@@ -47,8 +47,8 @@ export const Skill = skill<RemindConfiguration & { reminder: any; repos: any }>(
         },
         reminder: {
             type: ParameterType.Schedule,
-            displayName: "Reminder cron pattern",
-            description: "When to send pull request reminders",
+            displayName: "Cron expression",
+            description: "Cron expression for when to send pull request reminders in UTC time",
             required: true,
         },
         repos: parameter.repoFilter(),
