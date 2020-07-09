@@ -10,8 +10,7 @@ Receive reminders about open pull requests that are waiting for your review
 
 <!---atomist-skill-readme:start--->
 
-Atomist Skill to periodically send reminders about pending pull request reviews to reviewers.  
-
+Atomist Skill to periodically send reminders about pending pull request reviews to reviewers.
 
 ## <!---atomist-skill-readme:end--->
 
