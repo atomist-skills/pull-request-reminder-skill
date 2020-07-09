@@ -1,5 +1,5 @@
 query OpenPullRequest($first: Int, $offset: Int) {
-    PullRequest(state: "open", first: $first, offset: $offset) {
+    PullRequest(first: $first, offset: $offset, filter: {state: "open", reviews_some: {state: requested, by_some: {person: {chatId: {screenName_not: null}}}}}) {
         url
         number
         title
@@ -25,11 +25,11 @@ query OpenPullRequest($first: Int, $offset: Int) {
             name
         }
         createdAt
-        reviews(state: requested) @required {
+        reviews {
             state
-            by @required {
-                person @required {
-                    chatId @required {
+            by {
+                person {
+                    chatId {
                         screenName
                     }
                 }
