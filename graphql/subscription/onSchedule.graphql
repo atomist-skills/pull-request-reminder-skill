@@ -1,6 +1,6 @@
 subscription remindOnSchedule {
-    OnSchedule {
-        configurationName
-        parameterName
-    }
+  OnSchedule {
+    configurationName
+    parameterName
+  }
 }
