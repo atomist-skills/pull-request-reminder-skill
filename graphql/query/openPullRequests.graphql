@@ -1,40 +1,50 @@
 query OpenPullRequest($first: Int, $offset: Int) {
-    PullRequest(first: $first, offset: $offset, filter: {state: "open", reviews_some: {state: requested, by_some: {person: {chatId: {screenName_not: null}}}}}) {
-        url
-        number
-        title
-        body
-        author {
-            login
-        }
-        repo {
-            name
-            owner
-            url
-            org {
-                provider {
-                    apiUrl
-                    providerType
-                }
-            }
-        }
-        labels {
-            name
-        }
-        assignees {
-            name
-        }
-        createdAt
-        reviews {
-            state
-            by {
-                person {
-                    chatId {
-                        screenName
-                    }
-                }
-                login
-            }
-        }
+  PullRequest(
+    first: $first
+    offset: $offset
+    filter: {
+      state: "open"
+      reviews_some: {
+        state: requested
+        by_some: { person: { chatId: { screenName_not: null } } }
+      }
     }
+  ) {
+    url
+    number
+    title
+    body
+    author {
+      login
+    }
+    repo {
+      name
+      owner
+      url
+      org {
+        provider {
+          apiUrl
+          providerType
+        }
+      }
+    }
+    labels {
+      name
+    }
+    assignees {
+      name
+    }
+    createdAt
+    reviews {
+      state
+      by {
+        person {
+          chatId {
+            screenName
+          }
+        }
+        login
+      }
+    }
+  }
 }
