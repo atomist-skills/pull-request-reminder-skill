@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable */
+
 import * as slack from "@atomist/slack-messages";
 import * as _ from "lodash";
 
