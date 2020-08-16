@@ -3,7 +3,7 @@
   "dependencies": {
     "@atomist/skill": "0.1.0-master.20200702145252",
     "@atomist/slack-messages": "^1.1.1",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
     "@google-cloud/functions-framework": "^1.7.1",
@@ -15,7 +15,7 @@
     "@types/power-assert": "^1.5.3",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
-    "eslint": "^7.6.0",
+    "eslint": "^7.7.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "espower-typescript": "^9.0.2",
