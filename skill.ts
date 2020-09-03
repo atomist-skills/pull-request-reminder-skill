@@ -71,7 +71,7 @@ export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>(
 
 		commands: [
 			{
-				name: "print_utc",
+				name: "printUtc",
 				description: "print utc",
 				displayName: "print utc",
 				pattern: /^print utc$/,
