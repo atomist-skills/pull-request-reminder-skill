@@ -32,11 +32,6 @@ export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>(
 		author: "Atomist",
 		categories: [Category.DevEx],
 		license: "Apache-2.0",
-		homepageUrl:
-			"https://github.com/atomist/pull-request-reminder-skill-skill",
-		repositoryUrl:
-			"https://github.com/atomist/pull-request-reminder-skill-skill.git",
-		iconUrl: "file://docs/images/icon.svg",
 
 		runtime: {
 			memory: 512,
@@ -66,16 +61,5 @@ export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>(
 			},
 			repos: parameter.repoFilter(),
 		},
-
-		subscriptions: ["file://graphql/subscription/*.graphql"],
-
-		commands: [
-			{
-				name: "printUtc",
-				description: "print utc",
-				displayName: "print utc",
-				pattern: /^print utc$/,
-			},
-		],
 	},
 );
