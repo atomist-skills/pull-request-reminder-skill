@@ -139,20 +139,7 @@ Following${
 								text: `*${slack.url(
 									pr.url,
 									`#${pr.number} ${slack.escape(pr.title)}`,
-								)}* by @${pr.author.login}\n${_.truncate(
-									removeMarkers(
-										removeAnchorLinks(
-											linkIssues(
-												slack.githubToSlack(pr.body),
-												pr.repo,
-											),
-										),
-									),
-									{
-										length: 200,
-										omission: "...",
-									},
-								)}`,
+								)}* by @${pr.author.login}`,
 							},
 						} as slack.SectionBlock,
 						{

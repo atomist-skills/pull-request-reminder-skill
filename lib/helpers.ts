@@ -430,12 +430,5 @@ export function isAssigner(assignable: any, assigneeLogin: string): boolean {
 }
 
 export function repoAndlabelsAndAssigneesFooter(repo: any, labels: any, assignees: any[]): string {
-    let footer = slack.url(repoUrl(repo), `${repo.owner}/${repo.name}`);
-    if (!!labels && labels.length > 0) {
-        footer += " \u00B7 " + labels.map((l: any) => l.name).join(" \u00B7 ");
-    }
-    if (!!assignees && assignees.length > 0) {
-        footer += " \u00B7 " + assignees.map(a => a.login).join(" \u00B7 ");
-    }
-    return footer;
+    return slack.url(repoUrl(repo), `${repo.owner}/${repo.name}`);
 }
