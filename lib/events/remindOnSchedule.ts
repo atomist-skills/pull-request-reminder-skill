@@ -17,12 +17,7 @@
 import { EventHandler, slack } from "@atomist/skill";
 import * as _ from "lodash";
 import { RemindConfiguration } from "../configuration";
-import {
-	linkIssues,
-	removeAnchorLinks,
-	removeMarkers,
-	repoAndlabelsAndAssigneesFooter,
-} from "../helpers";
+import { repoAndlabelsAndAssigneesFooter } from "../helpers";
 import {
 	OpenPullRequestQuery,
 	OpenPullRequestQueryVariables,
