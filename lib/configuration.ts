@@ -15,5 +15,5 @@
  */
 
 export interface RemindConfiguration {
-    users: string[];
+	users: string[];
 }
