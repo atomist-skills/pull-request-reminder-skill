@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Category, parameter, ParameterType, resourceProvider, skill } from "@atomist/skill";
+import { Category, parameter, ParameterType, ParameterVisibility, resourceProvider, skill } from "@atomist/skill";
 import { RemindConfiguration } from "./lib/configuration";
 
-export const Skill = skill<RemindConfiguration & { reminder: any; repos: any }>({
+export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>({
     name: "pull-request-reminder-skill",
     namespace: "atomist",
     displayName: "Pull Request Review Reminder",
@@ -41,15 +41,17 @@ export const Skill = skill<RemindConfiguration & { reminder: any; repos: any }>(
     parameters: {
         users: {
             type: ParameterType.StringArray,
-            displayName: "GitHub logins",
-            description: "GitHub logins of users who want to receive reminders",
+            displayName: "Ignore reviewers",
+            description: "List reviewers who should not get reminded (can be chat user names or GitHub logins)",
             required: false,
         },
-        reminder: {
+        schedule: {
             type: ParameterType.Schedule,
-            displayName: "Cron expression",
-            description: "Cron expression for when to send pull request reminders",
-            required: true,
+            displayName: "Process pull request reviews",
+            defaultValue: "0 * * * *",
+            description: "Cron expression to process pull request reviews",
+            required: false,
+            visibility: ParameterVisibility.Hidden,
         },
         repos: parameter.repoFilter(),
     },

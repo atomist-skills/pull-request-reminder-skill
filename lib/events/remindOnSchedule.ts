@@ -15,22 +15,13 @@
  */
 
 import { EventHandler, slack } from "@atomist/skill";
-import { escape, githubToSlack, url } from "@atomist/slack-messages";
 import * as _ from "lodash";
 import { RemindConfiguration } from "../configuration";
-import { commitIcon, linkIssues, normalizeTimestamp, removeMarkers, repoAndlabelsAndAssigneesFooter } from "../helpers";
+import { linkIssues, removeAnchorLinks, removeMarkers, repoAndlabelsAndAssigneesFooter } from "../helpers";
 import { OpenPullRequestQuery, OpenPullRequestQueryVariables, RemindOnScheduleSubscription } from "../typings/types";
 
 export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfiguration> = async ctx => {
-    const users = ctx.configuration[0].parameters.users;
-
-    if (!users || users.length === 0) {
-        return {
-            code: 0,
-            visibility: "hidden",
-            reason: `No users configured to be reminded`,
-        };
-    }
+    const users = ctx.configuration?.[0]?.parameters?.users || [];
 
     const pullRequests: Array<OpenPullRequestQuery["PullRequest"][0]> = [];
 
@@ -47,63 +38,123 @@ export const handler: EventHandler<RemindOnScheduleSubscription, RemindConfigura
     } while (!!prs && !!prs.PullRequest && prs.PullRequest.length > 0);
 
     if (pullRequests.length === 0) {
-        await ctx.audit.log(`No pending pull requests reviews for users ${users.join(", ")}`);
+        await ctx.audit.log(`No pending pull requests reviews`);
         return {
             code: 0,
-            reason: `No pending pull requests reviews for configured users`,
+            reason: `No pending pull requests reviews`,
             visibility: "hidden",
         };
     } else {
         await ctx.audit.log(
-            `${pullRequests.length} pending pull request ${
-                pullRequests.length === 1 ? "review" : "reviews"
-            } for users ${users.join(", ")}`,
+            `${pullRequests.length} pending pull request ${pullRequests.length === 1 ? "review" : "reviews"}`,
         );
         for (const pr of pullRequests) {
             await ctx.audit.log(` - ${pr.repo.owner}/${pr.repo.name}#${pr.number} ${pr.title}`);
         }
     }
 
-    for (const user of users) {
-        const userPullRequests = [];
-        let chatId;
-        pullRequests.forEach(pr => {
-            if (pr.reviews.some(r => r.state === "requested" && r.by.some(b => b.login === user))) {
-                userPullRequests.push(pr);
-                const review = pr.reviews.find(r => r.by.some(b => b.login === user));
-                chatId = review.by.find(b => b.login === user).person.chatId.screenName;
-            }
-        });
-        if (userPullRequests.length > 0 && !!chatId) {
-            const msg = slack.infoMessage(
-                "Pending Pull Request Reviews",
-                `The following pull ${
-                    userPullRequests.length === 1 ? "request is" : "requests are"
-                } pending your review:`,
-                ctx,
-            );
-            (msg.attachments[0].footer = `${msg.attachments[0].footer} \u00B7 ${url(
-                `https://preview.atomist.com/manage/${ctx.workspaceId}/skills/configure/${
-                    ctx.skill.id
-                }/${encodeURIComponent(ctx.configuration[0].name)}`,
-                "Configure",
-            )}`),
-                _.orderBy(userPullRequests, ["createdAt"], ["desc"]).forEach(pr => {
-                    msg.attachments.push({
-                        color: "#37A745",
-                        author_icon: "https://images.atomist.com/rug/pull-request-open.png",
-                        author_name: `#${pr.number} ${pr.title}`,
-                        author_link: pr.url,
-                        fallback: `#${pr.number} ${escape(pr.title)}`,
-                        text: removeMarkers(linkIssues(githubToSlack(pr.body), pr.repo)),
-                        mrkdwn_in: ["text"],
-                        footer: repoAndlabelsAndAssigneesFooter(pr.repo, pr.labels, pr.assignees),
-                        footer_icon: commitIcon(pr.repo),
-                        ts: normalizeTimestamp(pr.createdAt),
+    const pullRequestsByUsers: Record<
+        string,
+        { timezone: string; prs: Array<OpenPullRequestQuery["PullRequest"][0]> }
+    > = {};
+    pullRequests.forEach(pr => {
+        pr.reviews
+            .filter(r => r.state === "requested")
+            .forEach(r => {
+                r.by
+                    .filter(b => !users.includes(b.login) && !users.includes(b.person.chatId.screenName))
+                    .forEach(b => {
+                        const opr = pullRequestsByUsers[b.person.chatId.screenName] || {
+                            timezone: b.person.chatId.timezoneLabel,
+                            prs: [],
+                        };
+                        opr.prs.push(pr);
+                        pullRequestsByUsers[b.person.chatId.screenName] = opr;
                     });
-                });
-            await ctx.audit.log(`Sending pull request notification to chat user @${chatId}`);
-            await ctx.message.send(msg, { users: [chatId], channels: [] });
+            });
+    });
+
+    const currentHour = new Date().getUTCHours();
+    for (const user in pullRequestsByUsers) {
+        const pullRequestsByUser = pullRequestsByUsers[user];
+        const tz = await import("timezone-names");
+        const offsetHours = tz.getTimezoneOffsetByName(pullRequestsByUser.timezone)?.Hours || 0;
+        const triggerHours = currentHour + offsetHours;
+        if (triggerHours === 9 || triggerHours === 15) {
+            const msg: slack.SlackMessage = {
+                blocks: [
+                    {
+                        type: "section",
+                        text: {
+                            type: "mrkdwn",
+                            text: `*Pending Pull Request Reviews*
+Following${pullRequestsByUser.prs.length > 1 ? " " + pullRequestsByUser.prs.length : ""} ${
+                                pullRequestsByUser.prs.length === 1 ? "pull request" : "pull requests"
+                            } are waiting on your review:`,
+                        },
+                    } as slack.SectionBlock,
+                    { type: "divider" } as slack.DividerBlock,
+                ],
+            };
+
+            _.orderBy(pullRequestsByUser.prs, ["createdAt"], ["desc"]).forEach(pr => {
+                msg.blocks.push(
+                    {
+                        type: "section",
+                        text: {
+                            type: "mrkdwn",
+                            text: `*${slack.url(pr.url, `#${pr.number} ${slack.escape(pr.title)}`)}* by @${
+                                pr.author.login
+                            }\n${_.truncate(
+                                removeMarkers(removeAnchorLinks(linkIssues(slack.githubToSlack(pr.body), pr.repo))),
+                                {
+                                    length: 200,
+                                    omission: "...",
+                                },
+                            )}`,
+                        },
+                    } as slack.SectionBlock,
+                    {
+                        type: "context",
+                        elements: [
+                            {
+                                type: "image",
+                                image_url: "https://images.atomist.com/rug/pull-request-open.png",
+                                alt_text: "PR icon",
+                            },
+                            {
+                                type: "mrkdwn",
+                                text: repoAndlabelsAndAssigneesFooter(pr.repo, pr.labels, pr.assignees),
+                            },
+                        ],
+                    } as slack.ContextBlock,
+                );
+            });
+
+            msg.blocks.push(
+                { type: "divider" } as slack.DividerBlock,
+                {
+                    type: "context",
+                    elements: [
+                        {
+                            type: "image",
+                            image_url: "https://images.atomist.com/logo/atomist-black-mark-xsmall.png",
+                            alt_text: "Atomist icon",
+                        },
+                        {
+                            type: "mrkdwn",
+                            text: `${ctx.skill.namespace}/${ctx.skill.name} \u00B7 ${slack.url(
+                                `https://go.atomist.com/${ctx.workspaceId}/manage/skills/configure/${
+                                    ctx.skill.id
+                                }/${encodeURIComponent(ctx.configuration?.[0]?.name)}`,
+                                "Configure",
+                            )}`,
+                        },
+                    ],
+                } as slack.ContextBlock,
+            );
+
+            await ctx.message.send(msg, { users: [user] });
         }
     }
 

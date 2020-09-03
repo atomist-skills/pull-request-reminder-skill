@@ -1,9 +1,10 @@
 {
   "main": "node_modules/@atomist/skill/lib/function.js",
   "dependencies": {
-    "@atomist/skill": "0.1.0-master.20200702145252",
+    "@atomist/skill": "^0.1.1-87",
     "@atomist/slack-messages": "^1.1.1",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "timezone-names": "0.0.3"
   },
   "devDependencies": {
     "@google-cloud/functions-framework": "^1.7.1",

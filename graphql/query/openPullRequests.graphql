@@ -41,6 +41,7 @@ query OpenPullRequest($first: Int, $offset: Int) {
         person {
           chatId {
             screenName
+            timezoneLabel
           }
         }
         login
