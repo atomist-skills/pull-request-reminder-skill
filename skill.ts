@@ -14,47 +14,59 @@
  * limitations under the License.
  */
 
-import { Category, parameter, ParameterType, ParameterVisibility, resourceProvider, skill } from "@atomist/skill";
+import {
+	Category,
+	parameter,
+	ParameterType,
+	ParameterVisibility,
+	resourceProvider,
+	skill,
+} from "@atomist/skill";
 import { RemindConfiguration } from "./lib/configuration";
 
-export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>({
-    name: "pull-request-reminder-skill",
-    namespace: "atomist",
-    displayName: "Pull Request Review Reminder",
-    author: "Atomist",
-    categories: [Category.DevEx],
-    license: "Apache-2.0",
-    homepageUrl: "https://github.com/atomist/pull-request-reminder-skill-skill",
-    repositoryUrl: "https://github.com/atomist/pull-request-reminder-skill-skill.git",
-    iconUrl: "file://docs/images/icon.svg",
+export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>(
+	{
+		name: "pull-request-reminder-skill",
+		namespace: "atomist",
+		displayName: "Pull Request Review Reminder",
+		author: "Atomist",
+		categories: [Category.DevEx],
+		license: "Apache-2.0",
+		homepageUrl:
+			"https://github.com/atomist/pull-request-reminder-skill-skill",
+		repositoryUrl:
+			"https://github.com/atomist/pull-request-reminder-skill-skill.git",
+		iconUrl: "file://docs/images/icon.svg",
 
-    runtime: {
-        memory: 512,
-        timeout: 540,
-    },
+		runtime: {
+			memory: 512,
+			timeout: 540,
+		},
 
-    resourceProviders: {
-        github: resourceProvider.gitHub({ minRequired: 1 }),
-        chat: resourceProvider.chat({ minRequired: 1 }),
-    },
+		resourceProviders: {
+			github: resourceProvider.gitHub({ minRequired: 1 }),
+			chat: resourceProvider.chat({ minRequired: 1 }),
+		},
 
-    parameters: {
-        users: {
-            type: ParameterType.StringArray,
-            displayName: "Ignore reviewers",
-            description: "List reviewers who should not get reminded (can be chat user names or GitHub logins)",
-            required: false,
-        },
-        schedule: {
-            type: ParameterType.Schedule,
-            displayName: "Process pull request reviews",
-            defaultValue: "0 * * * *",
-            description: "Cron expression to process pull request reviews",
-            required: false,
-            visibility: ParameterVisibility.Hidden,
-        },
-        repos: parameter.repoFilter(),
-    },
+		parameters: {
+			users: {
+				type: ParameterType.StringArray,
+				displayName: "Ignore reviewers",
+				description:
+					"List reviewers who should not get reminded (can be chat user names or GitHub logins)",
+				required: false,
+			},
+			schedule: {
+				type: ParameterType.Schedule,
+				displayName: "Process pull request reviews",
+				defaultValue: "0 * * * *",
+				description: "Cron expression to process pull request reviews",
+				required: false,
+				visibility: ParameterVisibility.Hidden,
+			},
+			repos: parameter.repoFilter(),
+		},
 
-    subscriptions: ["file://graphql/subscription/*.graphql"],
-});
+		subscriptions: ["file://graphql/subscription/*.graphql"],
+	},
+);
