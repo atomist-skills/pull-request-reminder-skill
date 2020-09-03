@@ -68,5 +68,14 @@ export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>(
 		},
 
 		subscriptions: ["file://graphql/subscription/*.graphql"],
+
+		commands: [
+			{
+				name: "print_utc",
+				description: "print utc",
+				displayName: "print utc",
+				pattern: /^print utc$/,
+			},
+		],
 	},
 );
