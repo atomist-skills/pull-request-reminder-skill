@@ -16,7 +16,9 @@
 
 /* eslint-disable */
 
-import * as slack from "@atomist/slack-messages";
+import {
+    slack
+}from "@atomist/skill";
 import * as _ from "lodash";
 
 export function commitIcon(repo: any): string {
@@ -429,6 +431,6 @@ export function isAssigner(assignable: any, assigneeLogin: string): boolean {
     return assignable.lastAssignedBy ? assignable.lastAssignedBy.login === assigneeLogin : false;
 }
 
-export function repoAndlabelsAndAssigneesFooter(repo: any, labels: any, assignees: any[]): string {
-    return slack.url(repoUrl(repo), `${repo.owner}/${repo.name}`);
+export function repoAndlabelsAndAssigneesFooter(repo: any, creator: string): string {
+    return slack.url(repoUrl(repo), `${repo.owner}/${repo.name} ${slack.separator()} opened by @${creator}`);
 }

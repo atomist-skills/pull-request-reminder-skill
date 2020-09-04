@@ -134,7 +134,7 @@ Following${
 								text: `*${slack.url(
 									pr.url,
 									`#${pr.number} ${slack.escape(pr.title)}`,
-								)}* by @${pr.author.login}`,
+								)}*`,
 							},
 						} as slack.SectionBlock,
 						{
@@ -150,8 +150,7 @@ Following${
 									type: "mrkdwn",
 									text: repoAndlabelsAndAssigneesFooter(
 										pr.repo,
-										pr.labels,
-										pr.assignees,
+										pr.author.login,
 									),
 								},
 							],
