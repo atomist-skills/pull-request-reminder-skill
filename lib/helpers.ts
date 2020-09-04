@@ -432,5 +432,5 @@ export function isAssigner(assignable: any, assigneeLogin: string): boolean {
 }
 
 export function repoAndlabelsAndAssigneesFooter(repo: any, creator: string): string {
-    return slack.url(repoUrl(repo), `${repo.owner}/${repo.name} ${slack.separator()} opened by @${creator}`);
+    return `${slack.url(repoUrl(repo), `${repo.owner}/${repo.name}`)} ${slack.separator()} opened by @${creator}`;
 }
