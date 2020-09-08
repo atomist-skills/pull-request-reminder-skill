@@ -1,7 +1,7 @@
 {
   "main": "node_modules/@atomist/skill/lib/function.js",
   "dependencies": {
-    "@atomist/skill": "^0.1.1-101",
+    "@atomist/skill": "^0.1.1-106",
     "@atomist/slack-messages": "^1.1.1",
     "lodash": "^4.17.20",
     "timezone-names": "0.0.3"
