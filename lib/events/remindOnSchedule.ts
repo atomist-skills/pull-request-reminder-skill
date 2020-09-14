@@ -78,6 +78,7 @@ export const handler: EventHandler<
 				r.by
 					.filter(
 						b =>
+							!!b.person?.chatId?.screenName &&
 							!users.includes(b.login) &&
 							!users.includes(b.person.chatId.screenName),
 					)
