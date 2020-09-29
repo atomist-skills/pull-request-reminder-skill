@@ -18,6 +18,7 @@ import {
 	Category,
 	parameter,
 	ParameterType,
+	ParameterVisibility,
 	resourceProvider,
 	skill,
 } from "@atomist/skill";
@@ -56,7 +57,7 @@ export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>(
 				defaultValue: "0 * * * *",
 				description: "Cron expression to process pull request reviews",
 				required: false,
-				// visibility: ParameterVisibility.Hidden,
+				visibility: ParameterVisibility.Hidden,
 			},
 			repos: parameter.repoFilter(),
 		},
