@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { EventHandler, slack } from "@atomist/skill";
+import { EventHandler, slack, status } from "@atomist/skill";
 import * as _ from "lodash";
 import { RemindConfiguration } from "../configuration";
 import { repoAndlabelsAndAssigneesFooter } from "../helpers";
@@ -49,11 +49,7 @@ export const handler: EventHandler<
 
 	if (pullRequests.length === 0) {
 		await ctx.audit.log(`No pending pull requests reviews`);
-		return {
-			code: 0,
-			reason: `No pending pull requests reviews`,
-			visibility: "hidden",
-		};
+		return status.success(`No pending pull requests reviews`).hidden();
 	} else {
 		await ctx.audit.log(
 			`${pullRequests.length} pending pull request ${
@@ -95,6 +91,7 @@ export const handler: EventHandler<
 			});
 	});
 
+	const remindedUsers = [];
 	const currentHour = new Date().getUTCHours();
 	for (const user in pullRequestsByUsers) {
 		const pullRequestsByUser = pullRequestsByUsers[user];
@@ -176,13 +173,7 @@ Following${
 							text: `${ctx.skill.namespace}/${
 								ctx.skill.name
 							} \u00B7 ${slack.url(
-								`https://go.atomist.com/${
-									ctx.workspaceId
-								}/manage/skills/configure/${
-									ctx.skill.id
-								}/${encodeURIComponent(
-									ctx.configuration?.[0]?.name,
-								)}`,
+								ctx.configuration?.[0]?.url,
 								"Configure",
 							)}`,
 						},
@@ -191,11 +182,25 @@ Following${
 			);
 
 			await ctx.message.send(msg, { users: [user] });
+			await ctx.audit.log(
+				`Sent reminder about ${
+					pullRequestsByUser.prs.length
+				} pending pull request ${
+					pullRequestsByUser.prs.length === 1 ? "review" : "reviews"
+				} to user '${user}'`,
+			);
+			remindedUsers.push(user);
 		}
 	}
-
-	return {
-		code: 0,
-		reason: `Sent open pull request reminders`,
-	};
+	if (remindedUsers.length > 0) {
+		return status
+			.success(
+				`Sent pull request review reminders to ${
+					remindedUsers.length
+				} ${remindedUsers.length === 1 ? "user" : "users"}`,
+			)
+			.hidden();
+	} else {
+		return status.success(`No pull request review reminders sent`).hidden();
+	}
 };
