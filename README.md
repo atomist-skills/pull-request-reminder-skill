@@ -29,6 +29,10 @@ out direct messages to reviewers in Slack or Microsoft Teams.
 Reminders are being sent twice per day at 9am and 3pm in local
 time zones.
 
+For reminders to work correctly, users have to connect their
+chat identity to their GitHub login. This is best achieved by
+running `@atomist authorize github` in chat.
+
 ## <!---atomist-skill-readme:end--->
 
 Created by [Atomist][atomist].
