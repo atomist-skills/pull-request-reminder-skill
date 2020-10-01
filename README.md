@@ -10,7 +10,24 @@ Receive reminders about open pull requests that are waiting for your review
 
 <!---atomist-skill-readme:start--->
 
-Atomist Skill to periodically send reminders about pending pull request reviews to reviewers.
+# What it's useful for
+
+Every developer has experienced this: you raise a pull request and
+assign a co-worker to review your work. That review takes hours or
+even days to come in. You start to wonder if your request for
+review was even noticed or went straight to spam.
+
+This skill will periodically remind your fellow colleagues about
+pending reviews in Slack or Microsoft Teams so that you can be
+sure that they see your review request.
+
+# How it works
+
+This skill queries for pull requests with pending reviews and sends
+out direct messages to reviewers in Slack or Microsoft Teams.
+
+Reminders are being sent twice per day at 9am and 3pm in local
+time zones.
 
 ## <!---atomist-skill-readme:end--->
 
