@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist-skills/pull-request-reminder-skill/compare/1.0.1...HEAD)
 
+### Fixed
+
+-   Fix README markdown. [b3b91bb](https://github.com/atomist-skills/pull-request-reminder-skill/commit/b3b91bba963268e2b25e427e5fc54bab16868560)
+
 ## [1.0.1](https://github.com/atomist-skills/pull-request-reminder-skill/tree/1.0.1) - 2020-10-01
 
 ### Added
