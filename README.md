@@ -33,7 +33,7 @@ For reminders to work correctly, users have to connect their
 chat identity to their GitHub login. This is best achieved by
 running `@atomist authorize github` in chat.
 
-## <!---atomist-skill-readme:end--->
+<!---atomist-skill-readme:end--->
 
 Created by [Atomist][atomist].
 Need Help? [Join our Slack workspace][slack].
