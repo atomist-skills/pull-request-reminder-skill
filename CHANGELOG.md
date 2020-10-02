@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist-skills/pull-request-reminder-skill/compare/1.0.2...HEAD)
 
+### Changed
+
+-   Remove single dispatch. [5c533fc](https://github.com/atomist-skills/pull-request-reminder-skill/commit/5c533fc5e26679426d937846354e2058e0eaaf13)
+
 ## [1.0.2](https://github.com/atomist-skills/pull-request-reminder-skill/compare/1.0.1...1.0.2) - 2020-10-01
 
 ### Fixed
