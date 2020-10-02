@@ -28,7 +28,7 @@ export const handler: EventHandler<
 	RemindOnScheduleSubscription,
 	RemindConfiguration
 > = async ctx => {
-	const users = ctx.configuration?.[0]?.parameters?.users || [];
+	const users = ctx.configuration?.parameters?.users || [];
 
 	const pullRequests: Array<OpenPullRequestQuery["PullRequest"][0]> = [];
 
@@ -173,7 +173,7 @@ Following${
 							text: `${ctx.skill.namespace}/${
 								ctx.skill.name
 							} \u00B7 ${slack.url(
-								ctx.configuration?.[0]?.url,
+								ctx.configuration?.url,
 								"Configure",
 							)}`,
 						},
