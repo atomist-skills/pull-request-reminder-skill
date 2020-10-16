@@ -30,7 +30,7 @@ export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>(
 		namespace: "atomist",
 		displayName: "Pull Request Review Reminder",
 		author: "Atomist",
-		categories: [Category.ProjectManagement, Category.CodeReview],
+		categories: [Category.RepoManagement],
 		license: "Apache-2.0",
 
 		runtime: {
