@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist-skills/pull-request-reminder-skill/compare/1.0.3...HEAD)
 
+### Changed
+
+-   Update skill category. [00e16a9](https://github.com/atomist-skills/pull-request-reminder-skill/commit/00e16a9c4cdc90a82350ab4e7e14261be5f79e09)
+
 ## [1.0.3](https://github.com/atomist-skills/pull-request-reminder-skill/compare/1.0.2...1.0.3) - 2020-10-14
 
 ### Changed
