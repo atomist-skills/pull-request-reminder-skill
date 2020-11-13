@@ -10,7 +10,7 @@ This page details all runtime dependencies of `@atomist/pull-request-reminder-sk
 | ------------------------------- | ----- |
 | [0BSD](#0bsd)                   | 1     |
 | [AFLv2.1](#aflv21)              | 1     |
-| [Apache-2.0](#apache-20)        | 50    |
+| [Apache-2.0](#apache-20)        | 49    |
 | [BSD-2-Clause](#bsd-2-clause)   | 11    |
 | [BSD-3-Clause](#bsd-3-clause)   | 25    |
 | [BSD](#bsd)                     | 1     |
@@ -45,7 +45,6 @@ Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apa
 | ------------------------------------- | ----------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `@atomist/skill-logging`              | `0.2.6`                       | Atomist               | [https://github.com/atomist-skills/skill-logging](https://github.com/atomist-skills/skill-logging)                               |
 | `@atomist/skill`                      | `0.5.0`                       | Atomist               | [https://github.com/atomist-skills/skill](https://github.com/atomist-skills/skill)                                               |
-| `@atomist/slack-messages`             | `1.2.0`                       | Atomist               | [https://github.com/atomist/slack-messages](https://github.com/atomist/slack-messages)                                           |
 | `@atomist/slack-messages`             | `1.2.0-master.20200806132057` | Atomist               | [https://github.com/atomist/slack-messages](https://github.com/atomist/slack-messages)                                           |
 | `@google-cloud/common`                | `3.4.1`                       | Google Inc.           | [https://github.com/googleapis/nodejs-common](https://github.com/googleapis/nodejs-common)                                       |
 | `@google-cloud/logging`               | `8.1.0`                       | Google Inc.           | [https://github.com/googleapis/nodejs-logging](https://github.com/googleapis/nodejs-logging)                                     |
