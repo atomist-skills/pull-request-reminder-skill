@@ -31,6 +31,8 @@ export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>(
 		displayName: "Pull Request Review Reminder",
 		author: "Atomist",
 		categories: [Category.RepoManagement],
+		iconUrl:
+			"https://raw.githubusercontent.com/atomist-skills/pull-request-reminder-skill/main/docs/images/icon.svg",
 		license: "Apache-2.0",
 
 		runtime: {
