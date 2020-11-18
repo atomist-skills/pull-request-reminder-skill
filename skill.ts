@@ -29,11 +29,11 @@ export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>(
 		name: "pull-request-reminder-skill",
 		namespace: "atomist",
 		displayName: "Pull Request Review Reminder",
-		author: "Atomist",
+		description:
+			"Receive reminders about open pull requests that are waiting for your review",
 		categories: [Category.RepoManagement],
 		iconUrl:
 			"https://raw.githubusercontent.com/atomist-skills/pull-request-reminder-skill/main/docs/images/icon.svg",
-		license: "Apache-2.0",
 
 		runtime: {
 			memory: 512,
