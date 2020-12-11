@@ -16,6 +16,7 @@
 
 import { EventHandler, slack, status } from "@atomist/skill";
 import * as _ from "lodash";
+
 import { RemindConfiguration } from "../configuration";
 import { repoAndlabelsAndAssigneesFooter } from "../helpers";
 import {
