@@ -22,6 +22,7 @@ import {
 	resourceProvider,
 	skill,
 } from "@atomist/skill";
+
 import { RemindConfiguration } from "./lib/configuration";
 
 export const Skill = skill<RemindConfiguration & { schedule: any; repos: any }>(
