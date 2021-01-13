@@ -102,6 +102,7 @@ export const handler: EventHandler<
 		const triggerHours = currentHour + offsetHours;
 		if (triggerHours === 9 || triggerHours === 15) {
 			const msg: slack.SlackMessage = {
+				text: "Pending Pull Request Reviews",
 				blocks: [
 					{
 						type: "section",
