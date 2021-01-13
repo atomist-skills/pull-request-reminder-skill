@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist-skills/pull-request-reminder-skill/compare/1.2.0...HEAD)
 
+### Fixed
+
+-   Provide Slack message fallback. [#131](https://github.com/atomist-skills/pull-request-reminder-skill/issues/131)
+
 ## [1.2.0](https://github.com/atomist-skills/pull-request-reminder-skill/compare/1.1.0...1.2.0) - 2020-11-18
 
 ### Changed
