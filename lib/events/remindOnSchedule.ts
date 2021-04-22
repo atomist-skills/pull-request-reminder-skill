@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { EventHandler, slack, status } from "@atomist/skill";
+import { EventHandler, log, slack, status } from "@atomist/skill";
 import * as _ from "lodash";
 
 import { RemindConfiguration } from "../configuration";
@@ -49,16 +49,16 @@ export const handler: EventHandler<
 	} while (!!prs && !!prs.PullRequest && prs.PullRequest.length > 0);
 
 	if (pullRequests.length === 0) {
-		await ctx.audit.log(`No pending pull requests reviews`);
+		log.info(`No pending pull requests reviews`);
 		return status.success(`No pending pull requests reviews`).hidden();
 	} else {
-		await ctx.audit.log(
+		log.info(
 			`${pullRequests.length} pending pull request ${
 				pullRequests.length === 1 ? "review" : "reviews"
 			}`,
 		);
 		for (const pr of pullRequests) {
-			await ctx.audit.log(
+			log.info(
 				` - ${pr.repo.owner}/${pr.repo.name}#${pr.number} ${pr.title}`,
 			);
 		}
@@ -184,7 +184,7 @@ Following${
 			);
 
 			await ctx.message.send(msg, { users: [user] });
-			await ctx.audit.log(
+			log.info(
 				`Sent reminder about ${
 					pullRequestsByUser.prs.length
 				} pending pull request ${
